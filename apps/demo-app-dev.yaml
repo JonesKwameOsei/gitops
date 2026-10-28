@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: demo-app
+  name: demo-app-dev
   namespace: argocd             # Applications always live in Argo CD's namespace
   finalizers:
     - resources-finalizer.argocd.argoproj.io
