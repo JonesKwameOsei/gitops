@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: python-app-1
+  namespace: argocd             # Applications always live in Argo CD's namespace
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/joneskwameosei-org/python-app-1.git
+    targetRevision: main
+    path: charts/python-app-1
+    helm:
+      releaseName: python-app-1
+      valueFiles:
+        - values.yaml
+        - values-dev.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: python-app-1-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        gateway-access: "true"
