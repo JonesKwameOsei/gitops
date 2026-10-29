@@ -29,6 +29,7 @@ github:
   # Created out-of-band; keys: client-secret, private-key.pem
   appSecret: backstage-github-app
   allowedInstallationOwners: []
+  sealedSecret: {}
 
 resources:
   requests: { cpu: 250m, memory: 512Mi }
