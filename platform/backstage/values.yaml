@@ -1,0 +1,35 @@
+image:
+  repository: kwameds/backstage
+  tag: v1
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+# The URL users type in the browser. Drives app/backend baseUrl and CORS.
+publicUrl: http://localhost:7007
+
+route:
+  enabled: true
+  hostname: ""
+  gateway:
+    name: web
+    namespace: default
+
+postgres:
+  host: ""
+  port: 5432
+  user: backstage
+  passwordSecret:
+    name: ""
+    key: password
+
+github:
+  appId: ""
+  clientId: ""     # GitHub App client ID, used for both sign-in and the integration
+  # Created out-of-band; keys: client-secret, private-key.pem
+  appSecret: backstage-github-app
+  allowedInstallationOwners: []
+
+resources:
+  requests: { cpu: 250m, memory: 512Mi }
+  limits: { memory: 1Gi }

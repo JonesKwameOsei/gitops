@@ -1,0 +1,13 @@
+publicUrl: https://backstage.test.com:8443
+route:
+  hostname: backstage.test.com
+postgres:
+  host: psql-postgresql
+  passwordSecret:
+    name: psql-postgresql
+github:
+  appId: "5523045"
+  clientId: "Iv23lia5rSqvaGohdgR4"
+  allowedInstallationOwners:
+    - joneskwameosei-org
+

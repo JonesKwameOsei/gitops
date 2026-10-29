@@ -1,0 +1,6 @@
+apiVersion: v2
+name: backstage
+description: Backstage developer portal
+type: application
+version: 0.1.0     # chart version: bump when templates change
+appVersion: "v1"   # app (image) version, informational  

@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-app-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "backstage.labels" . | nindent 4 }}
+data:
+  app-config.k8s.yaml: |
+    app:
+      baseUrl: {{ .Values.publicUrl }}
+    backend:
+      baseUrl: {{ .Values.publicUrl }}
+      cors:
+        origin: {{ .Values.publicUrl }}
+      database:
+        connection:
+          host: {{ required "postgres.host is required" .Values.postgres.host }}
+          port: {{ .Values.postgres.port }}
+          user: {{ .Values.postgres.user }}
+    auth:
+      providers:
+        github:
+          production:
+            clientId: {{ required "github.clientId is required" .Values.github.clientId }}
+    integrations:
+      github:
+        - host: github.com
+          apps:
+            - appId: {{ required "github.appId is required" .Values.github.appId }}
+              clientId: {{ .Values.github.clientId }}
+              clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+              privateKey:
+                $file: /app/secrets/github-app/private-key.pem
+              {{- with .Values.github.allowedInstallationOwners }}
+              allowedInstallationOwners:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+    scaffolder:
+      defaultAuthor:
+        name: joneskwameosei-backstage[bot]
+        email: 349719479+joneskwameosei-backstage[bot]@users.noreply.github.com
+
