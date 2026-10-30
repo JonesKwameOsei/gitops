@@ -22,4 +22,7 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: backstage
-  # No syncPolicy: review the diff, sync by hand, then enable automation in 2c-4
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
