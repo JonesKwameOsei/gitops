@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: step3-test-dev
+  namespace: argocd             # Applications always live in Argo CD's namespace
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/joneskwameosei-org/step3-test.git
+    targetRevision: main
+    path: charts/step3-test
+    helm:
+      releaseName: step3-test
+      valueFiles:
+        - values.yaml
+        - values-dev.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: step3-test-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        gateway-access: "true"
