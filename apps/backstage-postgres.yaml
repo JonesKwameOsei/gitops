@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage-postgres
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: registry-1.docker.io/bitnamicharts      # 1. upstream chart, pinned
+      chart: postgresql
+      targetRevision: 15.5.38
+      helm:
+        releaseName: psql                               # must match the existing release
+        valueFiles:
+          - $values/platform/backstage-postgres/values.yaml
+    - repoURL: https://github.com/joneskwameosei-org/gitops.git   # 2. our values, referenced as $values
+      targetRevision: main
+      ref: values
+    - repoURL: https://github.com/joneskwameosei-org/gitops.git   # 3. our extra manifests
+      targetRevision: main
+      path: platform/backstage-postgres/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backstage
+  # No syncPolicy: review the diff, sync by hand, then enable automation in 2c-4

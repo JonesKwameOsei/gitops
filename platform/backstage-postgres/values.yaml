@@ -1,0 +1,15 @@
+image:
+  registry: docker.io
+  repository: bitnamilegacy/postgresql
+  tag: 16.4.0-debian-12-r14
+auth:
+  username: backstage
+  database: backstage
+  existingSecret: psql-postgresql   # chart uses this Secret instead of rendering its own
+primary:
+  persistence:
+    enabled: true
+    size: 8Gi
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { memory: 512Mi }
